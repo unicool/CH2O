@@ -39,7 +39,6 @@ import com.unicool.ch2o_bluetooth.ui.fragment.base.BaseFragment;
 import com.unicool.ch2o_bluetooth.util.SPUtil;
 import com.unicool.ch2o_bluetooth.util.Tools;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -172,12 +171,13 @@ public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.On
     private boolean isBonded;
     private BHTDevBean mBonded;
     private ProgressDialog pdc;
+    private float old = -1;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true); //getActivity().invalidateOptionsMenu(); 刷新菜单
+        setHasOptionsMenu(true);
 
         IntentFilter intent = new IntentFilter();
         intent.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
@@ -255,6 +255,12 @@ public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.On
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, null, false);
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getActivity().invalidateOptionsMenu(); //刷新菜单
     }
 
     @Override
@@ -375,7 +381,7 @@ public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.On
                 BluetoothMgr.getInstance().setDiscoverable(255);
                 return true;
             case R.id.action_set:
-                mHandler.obtainMessage(1001, 10.24f).sendToTarget();
+                mHandler.obtainMessage(1001, 10.248f).sendToTarget();
                 return true;
         }
 
@@ -443,8 +449,7 @@ public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.On
         boolean open = BluetoothMgr.getInstance().isSelfOpen(this);
         if (!open) return;
         if (acl_connected) {
-            BluetoothMgr.getInstance().writeData(mBonded, Tools.stringToByte("这是一条测试用的数据1/2"));
-            BluetoothMgr.getInstance().writeData(mBonded, Tools.stringToByte(Arrays.toString(mBonded.uuids)));
+            BluetoothMgr.getInstance().writeData(mBonded, Tools.stringToByte("this is a test data."));
         } else {
             mStatus.setText("状态：正在连接设备" + mBonded.name + "\t" + mBonded.address + "\n请稍后...");
             BluetoothMgr.getInstance().starConnect(mBonded);
@@ -454,9 +459,13 @@ public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.On
     private final String numberColor = "#E78828";
 
     public void setCH2O(float i) {
+        if (old == i) {
+            return;
+        }
+        old = i;
         mData1.setText(Html.fromHtml(String.format(Locale.getDefault(),
-                "气体浓度\t甲醛：<font color='%s'>%f</font> mg/m3", numberColor, i)));
+                "气体浓度\t甲醛：<font color='%s'>%.2f</font> mg/m3", numberColor, i)));
         mData2.setText(Html.fromHtml(String.format(Locale.getDefault(),
-                "气体浓度\t\t\t苯：<font color='%s'>%f</font> mg/m3", numberColor, i * (Math.random() + 2))));
+                "气体浓度\t\t\t苯：<font color='%s'>%.2f</font> mg/m3", numberColor, i * (Math.random() + 2))));
     }
 }

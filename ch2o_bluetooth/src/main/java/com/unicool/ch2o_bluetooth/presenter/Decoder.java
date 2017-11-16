@@ -28,9 +28,8 @@ public class Decoder {
         byte[] p = Tools.byteTobyte(bytes, 6, 1);
         String s = Tools.parseByte2HexStr(ch2o);
         Integer c = Integer.valueOf(s, 16);
-        float i = c / (float) (10 ^ p[0]);
+        float i = c / (float) Math.pow(10, p[0]);
 
-        Log.e("HomeFragment", "i:" + i);
         if (HomeFragment.mHandler != null) {
             HomeFragment.mHandler.obtainMessage(1001, i).sendToTarget();
         }

@@ -203,8 +203,6 @@ public class BluetoothMgr {
         final BluetoothDevice bhtDev = mBluetoothAdapter.getRemoteDevice(dev.address);
         ParcelUuid[] uuids = bhtDev.getUuids();
         Log.i(TAG, "uuids:" + Arrays.toString(uuids));
-        Toast.makeText(mContext.get(), "uuids:" + Arrays.toString(uuids), Toast.LENGTH_SHORT).show();
-        Log.i(TAG, "starConnect - dev:" + dev);
 
         ThdMgr.executeOnNetWorkThread(new Runnable() {
 
@@ -337,8 +335,8 @@ public class BluetoothMgr {
             in = socket.getInputStream();
             while (socket.isConnected()) {
                 int len = in.available();
-                Log.e(TAG, "    ==========    " + len);
-                Log.i(TAG, "    ==========    " + len);
+                //Log.e(TAG, "    ==========    " + len);
+                //Log.i(TAG, "    ==========    " + len);
                 if (len == 0) {
                     try {
                         Thread.sleep(512);
