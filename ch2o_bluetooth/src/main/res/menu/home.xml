@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_open"
+        android:orderInCategory="100"
+        android:title="打开"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_scan"
+        android:orderInCategory="100"
+        android:title="扫描"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_disscan"
+        android:orderInCategory="100"
+        android:title="停止扫描"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_match"
+        android:orderInCategory="100"
+        android:title="配对"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_dismatch"
+        android:orderInCategory="100"
+        android:title="取消配对"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_conn"
+        android:orderInCategory="100"
+        android:title="连接"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_disconn"
+        android:orderInCategory="100"
+        android:title="断开连接"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_see"
+        android:orderInCategory="100"
+        android:title="可见性（255秒）"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_set"
+        android:orderInCategory="100"
+        android:title="数据测试"
+        app:showAsAction="never" />
+</menu>
