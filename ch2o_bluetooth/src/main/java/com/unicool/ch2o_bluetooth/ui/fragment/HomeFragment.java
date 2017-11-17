@@ -41,6 +41,7 @@ import com.unicool.ch2o_bluetooth.util.Tools;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 /*
  *  @项目名：  CH2O 
@@ -52,8 +53,13 @@ import java.util.Locale;
  */
 public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.OnItemViewClickListener {
 
+    public static Handler mHandler = null;
+    private final String numberColor = "#E78828";
     private BaseRecyclerAdapter<BHTDevBean> mRecyclerAdapter = null;
     private boolean acl_connected = false;
+    private TextView mlogs, mStatus, mTarget, mDesc, mData1, mData2;
+    private boolean isBonded;
+    private BHTDevBean mBonded;
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -163,16 +169,8 @@ public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.On
             }
         }
     };
-
-    public static Handler mHandler = null;
-
-
-    private TextView mlogs, mStatus, mTarget, mDesc, mData1, mData2;
-    private boolean isBonded;
-    private BHTDevBean mBonded;
     private ProgressDialog pdc;
-    private float old = -1;
-
+    private float old;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -292,10 +290,11 @@ public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.On
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new DividerItemDecoration(this.getContext(), DividerItemDecoration.VERTICAL));//x
 
+        old = -1;
         setCH2O(0f);
 
-        mDesc.setText(String.format("本机设备名称：%s", BluetoothMgr.getInstance().getBluetoothAdapter().getName()));
-        mDesc.append(String.format("\nMAC地址：%s", BluetoothMgr.getInstance().getBluetoothAdapter().getAddress()));
+        mDesc.setText(String.format("本机设备名称：\n%s", BluetoothMgr.getInstance().getBluetoothAdapter().getName()));
+        //mDesc.append(String.format("\nMAC地址：%s", BluetoothMgr.getInstance().getBluetoothAdapter().getAddress()));
         mStatus.setText(String.format("状态：\n蓝牙打开状态：%s", BluetoothMgr.getInstance().getBluetoothAdapter().isEnabled()));
 
         List<BHTDevBean> bondedDevices = BluetoothMgr.getInstance().getBondedDevices();
@@ -381,7 +380,8 @@ public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.On
                 BluetoothMgr.getInstance().setDiscoverable(255);
                 return true;
             case R.id.action_set:
-                mHandler.obtainMessage(1001, 10.248f).sendToTarget();
+
+                mHandler.obtainMessage(1001, new Random().nextFloat()).sendToTarget();
                 return true;
         }
 
@@ -392,7 +392,7 @@ public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.On
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         if (requestCode == BluetoothMgr.REQUEST_COMMUNICATE) {
-            mStatus.setText(String.format("状态：蓝牙打开状态：%s", resultCode == Activity.RESULT_OK));
+            mStatus.setText(String.format("状态：\n蓝牙打开状态：%s", resultCode == Activity.RESULT_OK));
             if (mBonded == null) {
                 String address = SPUtil.userPref().getString(I.Target, "");
                 if (!TextUtils.isEmpty(address)) {
@@ -440,7 +440,6 @@ public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.On
                 "取消配对：" + ((BHTDevBean) o).name + (b ? "\t成功" : "\t失败"), Toast.LENGTH_SHORT).show();
     }
 
-
     public void send2BHT(View v) {
         if (mBonded == null) {
             Toast.makeText(this.getContext(), "目标设备为空", Toast.LENGTH_SHORT).show();
@@ -456,16 +455,14 @@ public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.On
         }
     }
 
-    private final String numberColor = "#E78828";
-
     public void setCH2O(float i) {
         if (old == i) {
             return;
         }
         old = i;
         mData1.setText(Html.fromHtml(String.format(Locale.getDefault(),
-                "气体浓度\t甲醛：<font color='%s'>%.2f</font> mg/m3", numberColor, i)));
+                "醛基：<font color='%s'>%.2f</font> mg/m3", numberColor, i)));
         mData2.setText(Html.fromHtml(String.format(Locale.getDefault(),
-                "气体浓度\t\t\t苯：<font color='%s'>%.2f</font> mg/m3", numberColor, i * (Math.random() + 2))));
+                "苯基：<font color='%s'>%.2f</font> mg/m3", numberColor, i * (Math.random() + 2))));
     }
 }

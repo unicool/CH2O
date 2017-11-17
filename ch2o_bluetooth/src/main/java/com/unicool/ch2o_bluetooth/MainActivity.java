@@ -26,6 +26,10 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private ActionBarDrawerToggle mToggle;
+    private DrawerLayout mDrawer;
+    private ViewGroup mContainer;
+    private FragmentMgr mFragmentMgr;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -45,10 +49,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return false;
         }
     };
-    private ActionBarDrawerToggle mToggle;
-    private DrawerLayout mDrawer;
-    private ViewGroup mContainer;
-    private FragmentMgr mFragmentMgr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,8 +101,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation.setVisibility(View.GONE);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setVisibility(View.GONE);
     }
 
     @Override
