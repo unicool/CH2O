@@ -20,6 +20,7 @@ import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -68,13 +69,13 @@ public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.On
             switch (intent.getAction()) {
                 case BluetoothDevice.ACTION_ACL_CONNECTED:
                     acl_connected = true;
-                    mStatus.setText("状态：\n连接建立 --- 1007");
+                    mStatus.append("状态：\n连接建立 --- 1007");
                     break;
                 case BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED:
                     break;
                 case BluetoothDevice.ACTION_ACL_DISCONNECTED:
                     acl_connected = false;
-                    mStatus.setText("状态：\n连接断开 --- 1008");
+                    mStatus.append("状态：\n连接断开 --- 1008");
                     break;
                 case BluetoothDevice.ACTION_BOND_STATE_CHANGED:
                     BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
@@ -92,16 +93,16 @@ public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.On
                     switch (device.getBondState()) {
                         case BluetoothDevice.BOND_BONDING:
                             isBonded = false;
-                            mStatus.setText("状态：\n" + mBonded.name + "正在配对...");
+                            mStatus.append("状态：\n" + mBonded.name + "正在配对...");
                             break;
                         case BluetoothDevice.BOND_BONDED:
                             isBonded = true;
-                            mStatus.setText(String.format("状态：\n配对成功：%s", mBonded.name));
+                            mStatus.append(String.format("状态：\n配对成功：%s", mBonded.name));
                             SPUtil.userEditor().putString(I.Target, mBonded.address).commit();
                             break;
                         case BluetoothDevice.BOND_NONE:
                             isBonded = false;
-                            mStatus.setText(String.format("状态：\n配对失败：%s", mBonded.name));
+                            mStatus.append(String.format("状态：\n配对失败：%s", mBonded.name));
                             SPUtil.userEditor().putString(I.Target, "").commit();
                             break;
                     }
@@ -148,11 +149,11 @@ public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.On
                 case BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED:
                     break;
                 case BluetoothAdapter.ACTION_DISCOVERY_FINISHED:
-                    mStatus.setText("状态：\n已扫描完成");
+                    mStatus.append("状态：\n已扫描完成");
                     mRecyclerAdapter.setLock();
                     break;
                 case BluetoothAdapter.ACTION_DISCOVERY_STARTED:
-                    mStatus.setText("状态：\n正在扫描...");
+                    mStatus.append("状态：\n正在扫描...");
                     mRecyclerAdapter.clearDatas();
                     break;
                 case BluetoothAdapter.ACTION_LOCAL_NAME_CHANGED:
@@ -212,25 +213,25 @@ public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.On
                         mStatus.setText("状态：\n请打开蓝牙->");
                         break;
                     case 1003:
-                        mStatus.setText("状态：\n设备尚未配对或正在配对->");
+                        mStatus.append("状态：\n设备尚未配对或正在配对->");
                         break;
                     case 1004:
-                        mStatus.setText("状态：\n正在配对..."); //x
+                        mStatus.append("状态：\n正在配对..."); //x
                         break;
                     case 1005:
-                        mStatus.setText("状态：\n已经获取 Socket --- 01");
+                        mStatus.append("状态：\n已经获取 Socket --- 01");
                         break;
                     case 1006:
-                        mStatus.setText("状态：\n开始连接目标设备 --- 02");
+                        mStatus.append("状态：\n开始连接目标设备 --- 02");
                         break;
                     case 1007:
-                        mStatus.setText("状态：\n连接成功 --- 03");
+                        mStatus.append("状态：\n连接成功 --- 03");
                         break;
                     case 1008:
-                        mStatus.setText(String.format("状态：连接失败 --- %s", (String) msg.obj));
+                        mStatus.append(String.format("状态：连接失败 --- %s", (String) msg.obj));
                         break;
                     case 1009:
-                        mStatus.setText(String.format("状态：发出数据 --- \n%s", (String) msg.obj));
+                        mStatus.append(String.format("状态：发出数据 --- \n%s", (String) msg.obj));
                         break;
                     case 1010:
                         break;
@@ -279,6 +280,7 @@ public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.On
         mDesc = view.findViewById(R.id.desc);
         mTarget = view.findViewById(R.id.target);
         mStatus = view.findViewById(R.id.status);
+        mStatus.setMovementMethod(new ScrollingMovementMethod());
         mData1 = view.findViewById(R.id.data1);
         mData2 = view.findViewById(R.id.data2);
 
@@ -330,17 +332,17 @@ public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.On
             case R.id.action_scan:
                 boolean isScanning = BluetoothMgr.getInstance().scanDevices();
                 if (isScanning) {
-                    mStatus.setText("状态：正在扫描...");
+                    mStatus.append("状态：正在扫描...");
                     mRecyclerAdapter.clearDatas();
                 } else {
-                    //mStatus.setText("状态：\n扫描失败！");
+                    //mStatus.append("状态：\n扫描失败！");
                     Toast.makeText(this.getContext(), "扫描失败", Toast.LENGTH_SHORT).show();
                 }
                 return true;
             case R.id.action_disscan:
                 boolean isDisScanning = BluetoothMgr.getInstance().cancelScanDevices();
                 if (isDisScanning) {
-                    mStatus.setText("状态：已停止扫描");
+                    mStatus.append("状态：已停止扫描");
                     mRecyclerAdapter.setLock();
                 }
                 return true;
@@ -369,7 +371,7 @@ public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.On
                 }
                 boolean open = BluetoothMgr.getInstance().isSelfOpen(this);
                 if (!open) return true;
-                mStatus.setText("状态：正在连接设备" + mBonded.name + "\t" + mBonded.address + "\n请稍后...");
+                mStatus.append("状态：正在连接设备" + mBonded.name + "\t" + mBonded.address + "\n请稍后...");
                 BluetoothMgr.getInstance().starConnect(mBonded);
                 return true;
             case R.id.action_disconn:
@@ -450,7 +452,7 @@ public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.On
         if (acl_connected) {
             BluetoothMgr.getInstance().writeData(mBonded, Tools.stringToByte("this is a test data."));
         } else {
-            mStatus.setText("状态：正在连接设备" + mBonded.name + "\t" + mBonded.address + "\n请稍后...");
+            mStatus.append("状态：正在连接设备" + mBonded.name + "\t" + mBonded.address + "\n请稍后...");
             BluetoothMgr.getInstance().starConnect(mBonded);
         }
     }

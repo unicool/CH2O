@@ -39,10 +39,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/target"
         android:layout_margin="@dimen/text_margin"
-        android:fadeScrollbars="false"
+        android:fadeScrollbars="true"
         android:lines="3"
+        android:maxLines="5"
         android:scrollbars="vertical"
-        android:text="状态：未连接" />
+        tools:text="状态：未知" />
 
     <TextView
         android:id="@+id/data1"

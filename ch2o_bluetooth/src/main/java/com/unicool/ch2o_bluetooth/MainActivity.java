@@ -101,10 +101,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        navigation.setVisibility(View.GONE);
+        //navigation.setVisibility(View.GONE);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setVisibility(View.GONE);
+        //navigationView.setVisibility(View.GONE);
     }
 
     @Override
