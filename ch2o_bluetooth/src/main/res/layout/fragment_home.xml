@@ -40,7 +40,7 @@
         android:layout_below="@id/target"
         android:layout_margin="@dimen/text_margin"
         android:fadeScrollbars="true"
-        android:lines="3"
+        android:lines="5"
         android:maxLines="5"
         android:scrollbars="vertical"
         tools:text="状态：未知" />
