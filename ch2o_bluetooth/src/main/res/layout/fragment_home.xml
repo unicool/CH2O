@@ -11,8 +11,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_margin="@dimen/text_margin"
-        android:text="log："
-        android:visibility="gone" />
+        tools:text="log：" />
 
     <TextView
         android:id="@+id/desc"
@@ -20,7 +19,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_margin="@dimen/text_margin"
-        android:minLines="2"
         android:textStyle="bold"
         tools:text="本机信息：" />
 
@@ -30,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/desc"
         android:layout_margin="@dimen/text_margin"
-        android:minLines="3"
+        android:lines="2"
         android:text="目标设备：未知" />
 
     <TextView
@@ -39,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/target"
         android:layout_margin="@dimen/text_margin"
-        android:fadeScrollbars="true"
+        android:fadeScrollbars="false"
         android:lines="5"
         android:maxLines="5"
         android:scrollbars="vertical"
@@ -78,6 +76,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:text="发送->"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
 </RelativeLayout>

@@ -69,13 +69,13 @@ public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.On
             switch (intent.getAction()) {
                 case BluetoothDevice.ACTION_ACL_CONNECTED:
                     acl_connected = true;
-                    mStatus.append("状态：\n连接建立 --- 1007");
+                    mStatus.append("\n>>>连接建立 --- 1007");
                     break;
                 case BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED:
                     break;
                 case BluetoothDevice.ACTION_ACL_DISCONNECTED:
                     acl_connected = false;
-                    mStatus.append("状态：\n连接断开 --- 1008");
+                    mStatus.append("\n>>>连接断开 --- 1008");
                     break;
                 case BluetoothDevice.ACTION_BOND_STATE_CHANGED:
                     BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
@@ -89,20 +89,20 @@ public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.On
                     }
                     mBonded = bhtDevBean; //mBonded == null
                     Log.i("HomeFragment", "ACTION_BOND_STATE_CHANGED - mBonded:" + mBonded);
-                    mTarget.setText("目标设备：\n" + mBonded.name + "\n" + mBonded.address + "\n" + mBonded.bondState);
+                    mTarget.setText("目标设备：\n" + mBonded.name + "\n" + mBonded.address/* + "\n" + mBonded.bondState*/);
                     switch (device.getBondState()) {
                         case BluetoothDevice.BOND_BONDING:
                             isBonded = false;
-                            mStatus.append("状态：\n" + mBonded.name + "正在配对...");
+                            mStatus.setText("状态：\n>>>" + mBonded.name + "\t正在配对...");
                             break;
                         case BluetoothDevice.BOND_BONDED:
                             isBonded = true;
-                            mStatus.append(String.format("状态：\n配对成功：%s", mBonded.name));
+                            mStatus.append(String.format("\n>>>配对成功：%s", mBonded.name));
                             SPUtil.userEditor().putString(I.Target, mBonded.address).commit();
                             break;
                         case BluetoothDevice.BOND_NONE:
                             isBonded = false;
-                            mStatus.append(String.format("状态：\n配对失败：%s", mBonded.name));
+                            mStatus.append(String.format("\n>>>配对失败：%s", mBonded.name));
                             SPUtil.userEditor().putString(I.Target, "").commit();
                             break;
                     }
@@ -149,11 +149,11 @@ public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.On
                 case BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED:
                     break;
                 case BluetoothAdapter.ACTION_DISCOVERY_FINISHED:
-                    mStatus.append("状态：\n已扫描完成");
+                    mStatus.append("\n>>>已扫描完成");
                     mRecyclerAdapter.setLock();
                     break;
                 case BluetoothAdapter.ACTION_DISCOVERY_STARTED:
-                    mStatus.append("状态：\n正在扫描...");
+                    mStatus.setText("状态：\n>>>正在扫描...");
                     mRecyclerAdapter.clearDatas();
                     break;
                 case BluetoothAdapter.ACTION_LOCAL_NAME_CHANGED:
@@ -165,7 +165,7 @@ public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.On
                 case BluetoothAdapter.ACTION_SCAN_MODE_CHANGED:
                     break;
                 case BluetoothAdapter.ACTION_STATE_CHANGED:
-                    mStatus.setText(String.format("状态：\n蓝牙打开状态：%s", BluetoothMgr.getInstance().getBluetoothAdapter().isEnabled()));
+                    mStatus.setText(String.format("状态：\n>>>蓝牙打开状态：%s", BluetoothMgr.getInstance().getBluetoothAdapter().isEnabled()));
                     break;
             }
         }
@@ -210,28 +210,28 @@ public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.On
                         setCH2O((Float) msg.obj);
                         break;
                     case 1002:
-                        mStatus.setText("状态：\n请打开蓝牙->");
+                        mStatus.setText("状态：\n>>>请打开蓝牙->");
                         break;
                     case 1003:
-                        mStatus.append("状态：\n设备尚未配对或正在配对->");
+                        mStatus.setText("状态：\n>>>设备尚未配对或正在配对->");
                         break;
                     case 1004:
-                        mStatus.append("状态：\n正在配对..."); //x
+                        mStatus.setText("状态：\n>>>正在配对..."); //x
                         break;
                     case 1005:
-                        mStatus.append("状态：\n已经获取 Socket --- 01");
+                        mStatus.append("\n>>>已经获取 Socket --- 01");
                         break;
                     case 1006:
-                        mStatus.append("状态：\n开始连接目标设备 --- 02");
+                        mStatus.append("\n>>>开始连接目标设备 --- 02");
                         break;
                     case 1007:
-                        mStatus.append("状态：\n连接成功 --- 03");
+                        mStatus.setText("状态：\n>>>连接成功 --- 03");
                         break;
                     case 1008:
-                        mStatus.append(String.format("状态：连接失败 --- %s", (String) msg.obj));
+                        mStatus.append(String.format("\n>>>连接失败 --- %s", (String) msg.obj));
                         break;
                     case 1009:
-                        mStatus.append(String.format("状态：发出数据 --- \n%s", (String) msg.obj));
+                        mStatus.append(String.format("\n>>>发出数据 --- \n%s", (String) msg.obj));
                         break;
                     case 1010:
                         break;
@@ -295,9 +295,9 @@ public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.On
         old = -1;
         setCH2O(0f);
 
-        mDesc.setText(String.format("本机设备名称：\n%s", BluetoothMgr.getInstance().getBluetoothAdapter().getName()));
+        mDesc.setText(String.format("我的设备：\t%s", BluetoothMgr.getInstance().getBluetoothAdapter().getName()));
         //mDesc.append(String.format("\nMAC地址：%s", BluetoothMgr.getInstance().getBluetoothAdapter().getAddress()));
-        mStatus.setText(String.format("状态：\n蓝牙打开状态：%s", BluetoothMgr.getInstance().getBluetoothAdapter().isEnabled()));
+        mStatus.setText(String.format("状态：\n>>>蓝牙打开状态：%s", BluetoothMgr.getInstance().getBluetoothAdapter().isEnabled()));
 
         List<BHTDevBean> bondedDevices = BluetoothMgr.getInstance().getBondedDevices();
         String address = SPUtil.userPref().getString(I.Target, "");
@@ -305,7 +305,7 @@ public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.On
             if (bean.address.equals(address)) {
                 mBonded = new BHTDevBean(bean.name, bean.address, bean.bondState, bean.uuids);
                 Log.i("HomeFragment", "onViewCreated - getBondedDevices - mBonded:" + mBonded);
-                mTarget.setText("目标设备：\n" + bean.name + "\n" + bean.address + "\n" + bean.bondState);
+                mTarget.setText("目标设备：\n" + bean.name + "\n" + bean.address/* + "\n" + bean.bondState*/);
                 break;
             }
         }
@@ -332,17 +332,17 @@ public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.On
             case R.id.action_scan:
                 boolean isScanning = BluetoothMgr.getInstance().scanDevices();
                 if (isScanning) {
-                    mStatus.append("状态：正在扫描...");
+                    mStatus.setText("状态：\n>>>正在扫描...");
                     mRecyclerAdapter.clearDatas();
                 } else {
-                    //mStatus.append("状态：\n扫描失败！");
+                    //mStatus.setText("状态：\n>>>扫描失败！");
                     Toast.makeText(this.getContext(), "扫描失败", Toast.LENGTH_SHORT).show();
                 }
                 return true;
             case R.id.action_disscan:
                 boolean isDisScanning = BluetoothMgr.getInstance().cancelScanDevices();
                 if (isDisScanning) {
-                    mStatus.append("状态：已停止扫描");
+                    mStatus.setText("状态：\n>>>已停止扫描");
                     mRecyclerAdapter.setLock();
                 }
                 return true;
@@ -354,7 +354,7 @@ public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.On
                 isBonded = BluetoothMgr.getInstance().bondDevices(mBonded);
                 if (isBonded) {
                     SPUtil.userEditor().putString(I.Target, mBonded.address).commit();
-                    mTarget.setText("目标设备：\n" + mBonded.name + "\n" + mBonded.address + "\n" + mBonded.bondState);
+                    mTarget.setText("目标设备：\n" + mBonded.name + "\n" + mBonded.address/* + "\n" + mBonded.bondState*/);
                 } else {
                     Toast.makeText(this.getContext(),
                             "设备：" + mBonded.name + "\t配对失败", Toast.LENGTH_SHORT).show();
@@ -371,7 +371,7 @@ public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.On
                 }
                 boolean open = BluetoothMgr.getInstance().isSelfOpen(this);
                 if (!open) return true;
-                mStatus.append("状态：正在连接设备" + mBonded.name + "\t" + mBonded.address + "\n请稍后...");
+                mStatus.setText("状态：\n>>>正在连接设备" + mBonded.name + "\t" + mBonded.address + "\t请稍后...");
                 BluetoothMgr.getInstance().starConnect(mBonded);
                 return true;
             case R.id.action_disconn:
@@ -394,7 +394,7 @@ public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.On
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         if (requestCode == BluetoothMgr.REQUEST_COMMUNICATE) {
-            mStatus.setText(String.format("状态：\n蓝牙打开状态：%s", resultCode == Activity.RESULT_OK));
+            mStatus.setText(String.format("状态：\n>>>蓝牙打开状态：%s", resultCode == Activity.RESULT_OK));
             if (mBonded == null) {
                 String address = SPUtil.userPref().getString(I.Target, "");
                 if (!TextUtils.isEmpty(address)) {
@@ -403,7 +403,7 @@ public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.On
                         if (bean.address.equals(address)) {
                             mBonded = new BHTDevBean(bean.name, bean.address, bean.bondState, bean.uuids);
                             Log.i("HomeFragment", "onActivityResult - getBondedDevices - mBonded:" + mBonded);
-                            mTarget.setText("目标设备：\n" + bean.name + "\n" + bean.address + "\n" + bean.bondState);
+                            mTarget.setText("目标设备：\n" + bean.name + "\n" + bean.address/* + "\n" + bean.bondState*/);
                             break;
                         }
                     }
@@ -413,7 +413,7 @@ public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.On
                 isBonded = BluetoothMgr.getInstance().bondDevices(mBonded);
                 if (isBonded) {
                     SPUtil.userEditor().putString(I.Target, mBonded.address).commit();
-                    mTarget.setText("目标设备：\n" + mBonded.name + "\n" + mBonded.address + "\n" + mBonded.bondState);
+                    mTarget.setText("目标设备：\n" + mBonded.name + "\n" + mBonded.address/* + "\n" + mBonded.bondState*/);
                 }
             }
         }
@@ -427,7 +427,7 @@ public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.On
         if (isBonded) {
             mBonded = bonded;
             SPUtil.userEditor().putString(I.Target, mBonded.address).commit();
-            mTarget.setText("目标设备：\n" + mBonded.name + "\n" + mBonded.address + "\n" + mBonded.bondState);
+            mTarget.setText("目标设备：\n" + mBonded.name + "\n" + mBonded.address/* + "\n" + mBonded.bondState*/);
         } else {
             Toast.makeText(this.getContext(),
                     "设备：" + ((BHTDevBean) o).name + "\t配对失败", Toast.LENGTH_SHORT).show();
@@ -452,7 +452,7 @@ public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.On
         if (acl_connected) {
             BluetoothMgr.getInstance().writeData(mBonded, Tools.stringToByte("this is a test data."));
         } else {
-            mStatus.append("状态：正在连接设备" + mBonded.name + "\t" + mBonded.address + "\n请稍后...");
+            mStatus.append("\n>>>正在连接设备" + mBonded.name + "\t" + mBonded.address + "\t请稍后...");
             BluetoothMgr.getInstance().starConnect(mBonded);
         }
     }
@@ -463,8 +463,8 @@ public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.On
         }
         old = i;
         mData1.setText(Html.fromHtml(String.format(Locale.getDefault(),
-                "醛基：<font color='%s'>%.2f</font> mg/m3", numberColor, i)));
+                "醛基：<font color='%s'>%.2f</font> mg/kg", numberColor, i)));
         mData2.setText(Html.fromHtml(String.format(Locale.getDefault(),
-                "苯基：<font color='%s'>%.2f</font> mg/m3", numberColor, i * (Math.random() + 2))));
+                "苯基：<font color='%s'>%.2f</font> mg/kg", numberColor, i * (Math.random() + 2))));
     }
 }
