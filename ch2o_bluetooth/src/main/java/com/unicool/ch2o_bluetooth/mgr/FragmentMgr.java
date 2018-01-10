@@ -7,11 +7,13 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.unicool.ch2o_bluetooth.BuildConfig;
+
 import java.util.List;
 
 public class FragmentMgr {
     private static final String TAG = "FragmentMgr";
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = BuildConfig.DEBUG;
 
     private final FragmentManager mFragmentManager;
     private FragmentTransaction mCurTransaction = null;
@@ -21,6 +23,10 @@ public class FragmentMgr {
     public FragmentMgr(FragmentManager fm, List<Fragment> list) {
         mFragmentManager = fm;
         mFragmentList = list;
+    }
+
+    private static String makeFragmentName(int viewId, long id) {
+        return "android:switcher:" + viewId + ":" + id;
     }
 
     public void showFragment(ViewGroup container, int position) {
@@ -137,9 +143,5 @@ public class FragmentMgr {
      */
     private long getItemId(int position) {
         return position;
-    }
-
-    private static String makeFragmentName(int viewId, long id) {
-        return "android:switcher:" + viewId + ":" + id;
     }
 }

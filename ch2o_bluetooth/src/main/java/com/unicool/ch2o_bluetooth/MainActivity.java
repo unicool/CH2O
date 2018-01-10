@@ -18,7 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.unicool.ch2o_bluetooth.mgr.FragmentMgr;
-import com.unicool.ch2o_bluetooth.ui.dummy.DispTabs;
+import com.unicool.ch2o_bluetooth.ui.dummy.MainTabs;
 import com.unicool.ch2o_bluetooth.ui.fragment.base.BaseFragment;
 
 import java.util.ArrayList;
@@ -37,13 +37,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    mFragmentMgr.showFragment(mContainer, DispTabs.H.index);
+                    mFragmentMgr.showFragment(mContainer, MainTabs.H.index);
                     return true;
                 case R.id.navigation_dashboard:
-                    mFragmentMgr.showFragment(mContainer, DispTabs.D.index);
+                    mFragmentMgr.showFragment(mContainer, MainTabs.D.index);
                     return true;
                 case R.id.navigation_notifications:
-                    mFragmentMgr.showFragment(mContainer, DispTabs.N.index);
+                    mFragmentMgr.showFragment(mContainer, MainTabs.N.index);
                     return true;
             }
             return false;
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mContainer = (ViewGroup) findViewById(R.id.fl_main_container);
 
         List<Fragment> fragmentList = new ArrayList<>();
-        for (DispTabs tab : DispTabs.values()) {
+        for (MainTabs tab : MainTabs.values()) {
             try {
                 BaseFragment fragment = (BaseFragment) tab.clazz.newInstance();
                 Bundle arguments = new Bundle();
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }
         mFragmentMgr = new FragmentMgr(getSupportFragmentManager(), fragmentList);
-        mFragmentMgr.showFragment(mContainer, 0);
+        mFragmentMgr.showFragment(mContainer, MainTabs.D.index);
     }
 
     private void initView() {
@@ -99,12 +99,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mDrawer.addDrawerListener(mToggle);
         mToggle.syncState();
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        navigation.setVisibility(View.GONE);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setVisibility(View.GONE);
+        BottomNavigationView botNavi = (BottomNavigationView) findViewById(R.id.navigation);
+        botNavi.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+//        botNavi.setVisibility(View.GONE);
+        NavigationView drawerNaviView = (NavigationView) findViewById(R.id.nav_view);
+        drawerNaviView.setNavigationItemSelectedListener(this);
+//        drawerNaviView.setVisibility(View.GONE);
     }
 
     @Override

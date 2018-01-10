@@ -50,7 +50,7 @@ import java.util.Random;
  *  @文件名:   HomeFragment
  *  @创建者:   cjf
  *  @创建时间:  2017/11/13 20:01
- *  @描述：    TODO
+ *  @描述：    TODO 传统蓝牙
  */
 public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.OnItemViewClickListener {
 
