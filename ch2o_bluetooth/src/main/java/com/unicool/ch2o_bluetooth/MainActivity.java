@@ -57,11 +57,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         initView();
         initData();
+        initListener();
+    }
+
+    private void initListener() {
+        BottomNavigationView botNavi = findViewById(R.id.navigation);
+        botNavi.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        botNavi.setSelectedItemId(botNavi.getMenu().findItem(R.id.navigation_dashboard).getItemId());
+//        botNavi.getMenu().findItem(R.id.navigation_dashboard).setChecked(true);
+//        botNavi.setVisibility(View.GONE);
+        NavigationView drawerNavi = findViewById(R.id.nav_view);
+        drawerNavi.setNavigationItemSelectedListener(this);
+//        drawerNavi.setVisibility(View.GONE);
     }
 
     private void initData() {
-        mContainer = (ViewGroup) findViewById(R.id.fl_main_container);
-
         List<Fragment> fragmentList = new ArrayList<>();
         for (MainTabs tab : MainTabs.values()) {
             try {
@@ -77,14 +87,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }
         mFragmentMgr = new FragmentMgr(getSupportFragmentManager(), fragmentList);
-        mFragmentMgr.showFragment(mContainer, MainTabs.D.index);
+        //mFragmentMgr.showFragment(mContainer, 0);
     }
 
     private void initView() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -93,18 +103,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mToggle = new ActionBarDrawerToggle(
-                this, mDrawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawer = findViewById(R.id.drawer_layout);
+        mToggle = new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawer.addDrawerListener(mToggle);
         mToggle.syncState();
 
-        BottomNavigationView botNavi = (BottomNavigationView) findViewById(R.id.navigation);
-        botNavi.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-//        botNavi.setVisibility(View.GONE);
-        NavigationView drawerNaviView = (NavigationView) findViewById(R.id.nav_view);
-        drawerNaviView.setNavigationItemSelectedListener(this);
-//        drawerNaviView.setVisibility(View.GONE);
+        mContainer = findViewById(R.id.fl_main_container);
     }
 
     @Override

@@ -43,7 +43,7 @@ public class DashboardFragment extends BaseFragment {
     private void initData() {
         // 1.初始化-关联
         mFTabHost.setup(getContext(), getActivity().getSupportFragmentManager(), R.id.fl_container);
-        mFTabHost.getTabWidget().setShowDividers(LinearLayout.SHOW_DIVIDER_BEGINNING & LinearLayout.SHOW_DIVIDER_END); //分割线
+        mFTabHost.getTabWidget().setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE); //分割线
 
         //TabWidget tabWidget = mFTabHost.getTabWidget();
         //tabWidget.setOrientation(LinearLayout.VERTICAL); //标签栏垂直布局
