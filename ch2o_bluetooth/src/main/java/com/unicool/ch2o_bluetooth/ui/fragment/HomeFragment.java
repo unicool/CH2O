@@ -14,6 +14,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,7 +38,6 @@ import com.unicool.ch2o_bluetooth.mgr.BluetoothMgr;
 import com.unicool.ch2o_bluetooth.model.I;
 import com.unicool.ch2o_bluetooth.model.bean.BHTDevBean;
 import com.unicool.ch2o_bluetooth.presenter.adapter.BaseRecyclerAdapter;
-import com.unicool.ch2o_bluetooth.ui.fragment.base.BaseFragment;
 import com.unicool.ch2o_bluetooth.util.SPUtil;
 import com.unicool.ch2o_bluetooth.util.Tools;
 
@@ -53,7 +53,7 @@ import java.util.Random;
  *  @创建时间:  2017/11/13 20:01
  *  @描述：    TODO 传统蓝牙
  */
-public class HomeFragment extends BaseFragment implements BaseRecyclerAdapter.OnItemViewClickListener {
+public class HomeFragment extends Fragment implements BaseRecyclerAdapter.OnItemViewClickListener {
 
     public static Handler mHandler = null;
     private final String numberColor = "#E78828";
