@@ -30,7 +30,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/desc"
         android:layout_margin="@dimen/text_margin"
-        android:lines="2"
         android:text="目标设备：未知" />
 
     <TextView
@@ -40,8 +39,8 @@
         android:layout_below="@id/target"
         android:layout_margin="@dimen/text_margin"
         android:fadeScrollbars="false"
-        android:lines="5"
-        android:maxLines="5"
+        android:lines="4"
+        android:maxLines="6"
         android:scrollbars="vertical"
         tools:text="状态：未知" />
 
@@ -63,14 +62,22 @@
         android:textStyle="bold"
         tools:text="TextView" />
 
+    <TextView
+        android:id="@+id/data3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/data2"
+        android:layout_margin="@dimen/text_margin"
+        android:textStyle="bold"
+        tools:text="TextView" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_above="@+id/btn_send"
-        android:layout_below="@id/data2"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin" />
+        android:layout_below="@id/data3"
+        android:layout_margin="@dimen/text_margin" />
 
     <Button
         android:id="@+id/btn_send"

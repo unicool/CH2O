@@ -3,9 +3,7 @@ package com.unicool.ch2o_bluetooth;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -19,7 +17,7 @@ import android.view.ViewGroup;
 
 import com.unicool.ch2o_bluetooth.mgr.FragmentMgr;
 import com.unicool.ch2o_bluetooth.ui.dummy.MainTabs;
-import com.unicool.ch2o_bluetooth.ui.fragment.base.BaseFragment;
+import com.unicool.ch2o_bluetooth.ui.fragment.HomeFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,12 +37,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 case R.id.navigation_home:
                     mFragmentMgr.showFragment(mContainer, MainTabs.H.index);
                     return true;
-                case R.id.navigation_dashboard:
-                    mFragmentMgr.showFragment(mContainer, MainTabs.D.index);
-                    return true;
-                case R.id.navigation_notifications:
-                    mFragmentMgr.showFragment(mContainer, MainTabs.N.index);
-                    return true;
             }
             return false;
         }
@@ -63,45 +55,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void initListener() {
         BottomNavigationView botNavi = findViewById(R.id.navigation);
         botNavi.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        botNavi.setSelectedItemId(botNavi.getMenu().findItem(R.id.navigation_dashboard).getItemId());
-//        botNavi.getMenu().findItem(R.id.navigation_dashboard).setChecked(true);
-//        botNavi.setVisibility(View.GONE);
+        //botNavi.setSelectedItemId(botNavi.getMenu().findItem(R.id.navigation_dashboard).getItemId());
+        //botNavi.getMenu().findItem(R.id.navigation_dashboard).setChecked(true);
+        botNavi.setVisibility(View.GONE);
         NavigationView drawerNavi = findViewById(R.id.nav_view);
         drawerNavi.setNavigationItemSelectedListener(this);
-//        drawerNavi.setVisibility(View.GONE);
+        drawerNavi.setVisibility(View.GONE);
     }
 
     private void initData() {
         List<Fragment> fragmentList = new ArrayList<>();
-        for (MainTabs tab : MainTabs.values()) {
-            try {
-                BaseFragment fragment = (BaseFragment) tab.clazz.newInstance();
-                Bundle arguments = new Bundle();
-                arguments.putString(BaseFragment.ARG_ITEM_ID, String.valueOf(tab.index));
-                fragment.setArguments(arguments);
-                fragmentList.add(fragment);
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
+        fragmentList.add(new HomeFragment());
         mFragmentMgr = new FragmentMgr(getSupportFragmentManager(), fragmentList);
-        //mFragmentMgr.showFragment(mContainer, 0);
+        mFragmentMgr.showFragment(mContainer, 0);
     }
 
     private void initView() {
         Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        // TODO: 2018/3/10  
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setHomeButtonEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         mDrawer = findViewById(R.id.drawer_layout);
         mToggle = new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
